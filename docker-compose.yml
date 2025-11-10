@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  # Servidor vulnerável
+  victim:
+    image: ubuntu:22.04
+    container_name: security-victim
+    networks:
+      - labnet
+    ports:
+      - "2222:22"
+    volumes:
+      - ./pratica:/opt/security
+    command: |
+      bash -c "
+        apt-get update -qq &&
+        apt-get install -y openssh-server sudo &&
+        useradd -m professor &&
+        echo 'professor:123456' | chpasswd &&
+        usermod -aG sudo professor &&
+        service ssh start &&
+        tail -f /dev/null
+      "
+
+  # Máquina atacante
+  attacker:
+    image: kalilinux/kali-rolling
+    container_name: security-attacker
+    networks:
+      - labnet
+    volumes:
+      - ./pratica:/opt/tools
+    tty: true
+    command: |
+      bash -c "
+        apt-get update -qq &&
+        apt-get install -y nmap hydra sshpass &&
+        tail -f /dev/null
+      "
+
+networks:
+  labnet:
+    driver: bridge

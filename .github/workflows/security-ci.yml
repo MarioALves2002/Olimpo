@@ -1,0 +1,49 @@
+name: Security CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 2 * * 1'
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    name: Security Analysis
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Setup environment
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y shellcheck
+        
+    - name: Lint shell scripts
+      run: |
+        find . -name "*.sh" -exec shellcheck {} \;
+        
+    - name: Check for secrets
+      uses: trufflesecurity/trufflehog@main
+      with:
+        path: ./
+        base: main
+        head: HEAD
+
+  documentation-check:
+    runs-on: ubuntu-latest
+    name: Documentation Quality
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Validate documentation structure
+      run: |
+        test -f README.md
+        test -f docs/relatorio-auditoria.md
+        test -f docs/politicas-seguranca.md
+        test -f CHECKLIST-TRABALHO.md
