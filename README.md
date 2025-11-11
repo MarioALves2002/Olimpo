@@ -125,8 +125,8 @@ make deps  # Instalação automática
 
 | Membro | Responsabilidade |
 |--------|------------------|
-| **[Nome 1]** | Vulnerabilidades 1-3, Análise |
-| **[Nome 2]** | Vulnerabilidades 4-6, Hardening |
+| **Mario Alves Fernandes Neto** | Vulnerabilidades 1-3, Análise |
+| **Emiliano Ferreira de Souza Junior** | Vulnerabilidades 4-6, Hardening |
 
 ---
 
