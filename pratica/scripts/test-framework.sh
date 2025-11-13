@@ -46,22 +46,22 @@ test_vulnerabilities() {
     
     # Teste 1: SSH com senha fraca
     run_test "SSH Brute Force" \
-        "timeout 10 sshpass -p '123456' ssh -o ConnectTimeout=5 -o StrictHostKeyChecking=no professor@192.168.3.216 'echo SUCCESS'" \
+        "timeout 10 sshpass -p '123456789' ssh -o ConnectTimeout=5 -o StrictHostKeyChecking=no apolo@192.168.3.216 'echo SUCCESS'" \
         "SUCCESS"
     
     # Teste 2: Root login habilitado
     run_test "Root Login Check" \
-        "ssh professor@192.168.3.216 'grep PermitRootLogin /etc/ssh/sshd_config'" \
+        "ssh apolo@192.168.3.216 'grep PermitRootLogin /etc/ssh/sshd_config'" \
         "yes"
     
     # Teste 3: Autenticação por senha habilitada
     run_test "Password Auth Check" \
-        "ssh professor@192.168.3.216 'grep PasswordAuthentication /etc/ssh/sshd_config'" \
+        "ssh apolo@192.168.3.216 'grep PasswordAuthentication /etc/ssh/sshd_config'" \
         "yes"
     
     # Teste 4: Firewall desabilitado
     run_test "Firewall Status" \
-        "ssh professor@192.168.3.216 'sudo ufw status'" \
+        "ssh apolo@192.168.3.216 'sudo ufw status'" \
         "inactive"
 }
 
@@ -76,17 +76,17 @@ test_hardening() {
     
     # Teste 2: Fail2Ban ativo
     run_test "Fail2Ban Status" \
-        "ssh -p 2222 professor@192.168.3.216 'sudo systemctl is-active fail2ban'" \
+        "ssh -p 2222 apolo@192.168.3.216 'sudo systemctl is-active fail2ban'" \
         "active"
     
     # Teste 3: Firewall ativo
     run_test "UFW Status" \
-        "ssh -p 2222 professor@192.168.3.216 'sudo ufw status'" \
+        "ssh -p 2222 apolo@192.168.3.216 'sudo ufw status'" \
         "active"
     
     # Teste 4: Autenticação por chave
     run_test "Key Auth Test" \
-        "ssh -p 2222 -i /home/professor/.ssh/id_rsa -o PasswordAuthentication=no professor@192.168.3.216 'echo SUCCESS'" \
+        "ssh -p 2222 -i /home/apolo/.ssh/id_rsa -o PasswordAuthentication=no apolo@192.168.3.216 'echo SUCCESS'" \
         "SUCCESS"
 }
 

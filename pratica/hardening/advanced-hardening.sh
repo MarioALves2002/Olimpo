@@ -131,6 +131,7 @@ EOF
 advanced_audit_config() {
     log_message "INFO" "Configurando auditoria avançada"
     
+    mkdir -p /etc/audit/rules.d 2>/dev/null || true
     cat > /etc/audit/rules.d/security-hardening.rules << EOF
 # Security Hardening Audit Rules
 
@@ -170,7 +171,7 @@ advanced_audit_config() {
 -a always,exit -F arch=b32 -S setuid -S setgid -S setreuid -S setregid -k privilege_escalation
 EOF
     
-    systemctl restart auditd
+    systemctl restart auditd 2>/dev/null || echo "Auditd não disponível"
     log_message "AUDIT" "Regras de auditoria avançada configuradas"
 }
 
@@ -219,6 +220,7 @@ EOF
 advanced_fail2ban() {
     log_message "INFO" "Configurando Fail2Ban avançado"
     
+    mkdir -p /etc/fail2ban 2>/dev/null || true
     cat > /etc/fail2ban/jail.local << EOF
 [DEFAULT]
 bantime = 3600
@@ -259,7 +261,7 @@ logpath = /var/log/apache*/*access.log
 maxretry = 2
 EOF
     
-    systemctl restart fail2ban
+    systemctl restart fail2ban 2>/dev/null || echo "Fail2ban não disponível"
     log_message "AUDIT" "Fail2Ban avançado configurado"
 }
 

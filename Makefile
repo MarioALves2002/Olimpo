@@ -43,6 +43,15 @@ report: ## Gerar relatórios
 	@cp -r /var/log/security-audit /tmp/security-reports/ 2>/dev/null || true
 	@echo "$(GREEN)📊 Relatórios em /tmp/security-reports$(NC)"
 
+ataques: attack ## Executar ataques na vítima
+	@echo "$(RED)⚔️  Ataques executados na vítima 192.168.3.216$(NC)"
+
+correcao: harden ## Aplicar correções de segurança
+	@echo "$(GREEN)🛡️  Correções aplicadas$(NC)"
+
+relatorio: report ## Gerar relatório final
+	@echo "$(BLUE)📊 Relatório final gerado$(NC)"
+
 validate: ## Validar configurações
 	@ssh apolo@192.168.3.216 "grep -E '(Port|PermitRootLogin)' /etc/ssh/sshd_config" 2>/dev/null || true
 	@ssh apolo@192.168.3.216 "sudo ufw status" 2>/dev/null || true
@@ -57,8 +66,8 @@ deps: ## Instalar dependências
 	@which ufw >/dev/null 2>&1 || echo "ufw já disponível"
 	@echo "✅ Dependências verificadas"
 
-demo: setup attack harden validate ## Demo completa
-	@echo "$(GREEN)🎉 Demonstração concluída!$(NC)"
+demo: setup ataques correcao relatorio ## Demo completa para apresentação
+	@echo "$(GREEN)🎉 Demonstração completa concluída!$(NC)"
 
-all: setup attack harden test report ## Pipeline completo
+all: setup ataques correcao test relatorio ## Pipeline completo
 	@echo "$(GREEN)🎉 Pipeline executado com sucesso!$(NC)"
