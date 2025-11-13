@@ -79,20 +79,19 @@ cd /opt/tools && ./vulnerabilidades/demo-vulnerabilities.sh
 
 **Antes (Vulnerável):**
 ```bash
-ssh professor@192.168.3.216  # Senha: 123456 ✅
+ssh apolo@192.168.3.216  # Senha: 123456 ✅
 ```
 
 **Depois (Seguro):**
 ```bash
-ssh -p 2222 professor@192.168.3.216  # ❌ BLOQUEADO
+ssh -p 2222 apolo@192.168.3.216  # ❌ BLOQUEADO
 ```
 
 ## 📚 Documentação
 
 - [Relatório de Auditoria](docs/relatorio-auditoria.md)
-- [Políticas de Segurança](docs/politicas-seguranca.md)
 - [Arquitetura de Segurança](docs/arquitetura-seguranca.md)
-- [Roteiro de Apresentação](apresentacao/roteiro-apresentacao.md)
+
 
 ## 🔧 Requisitos
 
@@ -106,13 +105,6 @@ make deps  # Instalação automática
 - 4GB RAM, 20GB disco
 - Conectividade entre VMs
 
-## 📊 Métricas
-
-- **Scripts:** 7 otimizados
-- **Documentação:** 6,200 palavras
-- **Testes:** 18 casos automatizados
-- **Cobertura:** 6 vulnerabilidades críticas
-
 ## 🏆 Diferenciais
 
 - 🚀 **Automação completa** com Makefile
@@ -125,8 +117,8 @@ make deps  # Instalação automática
 
 | Membro | Responsabilidade |
 |--------|------------------|
-| **[Nome 1]** | Vulnerabilidades 1-3, Análise |
-| **[Nome 2]** | Vulnerabilidades 4-6, Hardening |
+| **[Mario alves ]** | Vulnerabilidades 1-3, Análise |
+| **[Emiliano Ferreira ]** | Vulnerabilidades 4-6, Hardening |
 
 ---
 
