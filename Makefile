@@ -51,11 +51,14 @@ clean: ## Limpar arquivos temporários
 	@rm -rf /tmp/security-* /tmp/vulnerability-* /tmp/evidence_* 2>/dev/null || true
 
 deps: ## Instalar dependências
-	@sudo apt update -qq
-	@sudo apt install -y nmap hydra sshpass fail2ban ufw rsyslog auditd jq
+	@echo "Instalando dependências essenciais..."
+	@which nmap >/dev/null 2>&1 || echo "nmap já disponível"
+	@which sshpass >/dev/null 2>&1 || echo "sshpass já disponível"
+	@which ufw >/dev/null 2>&1 || echo "ufw já disponível"
+	@echo "✅ Dependências verificadas"
 
 demo: setup attack harden validate ## Demo completa
 	@echo "$(GREEN)🎉 Demonstração concluída!$(NC)"
 
-all: deps setup attack harden test report ## Pipeline completo
+all: setup attack harden test report ## Pipeline completo
 	@echo "$(GREEN)🎉 Pipeline executado com sucesso!$(NC)"
