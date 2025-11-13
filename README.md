@@ -79,7 +79,7 @@ cd /opt/tools && ./vulnerabilidades/demo-vulnerabilities.sh
 
 **Antes (Vulnerável):**
 ```bash
-ssh apolo@192.168.3.216  # Senha: 123456 ✅
+ssh apolo@192.168.3.216  # Senha: 123456789 ✅
 ```
 
 **Depois (Seguro):**

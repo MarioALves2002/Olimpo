@@ -44,8 +44,8 @@ report: ## Gerar relatórios
 	@echo "$(GREEN)📊 Relatórios em /tmp/security-reports$(NC)"
 
 validate: ## Validar configurações
-	@ssh 192.168.3.216 "grep -E '(Port|PermitRootLogin)' /etc/ssh/sshd_config" 2>/dev/null || true
-	@ssh 192.168.3.216 "sudo ufw status" 2>/dev/null || true
+	@ssh apolo@192.168.3.216 "grep -E '(Port|PermitRootLogin)' /etc/ssh/sshd_config" 2>/dev/null || true
+	@ssh apolo@192.168.3.216 "sudo ufw status" 2>/dev/null || true
 
 clean: ## Limpar arquivos temporários
 	@rm -rf /tmp/security-* /tmp/vulnerability-* /tmp/evidence_* 2>/dev/null || true

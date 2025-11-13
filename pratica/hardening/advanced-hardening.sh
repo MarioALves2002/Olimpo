@@ -111,7 +111,7 @@ TCPKeepAlive no
 Compression no
 
 # Users and Groups
-AllowUsers professor
+AllowUsers apolo
 DenyUsers root
 AllowGroups ssh-users
 
@@ -121,7 +121,7 @@ EOF
     
     # Criar grupo SSH
     groupadd -f ssh-users
-    usermod -a -G ssh-users professor
+    usermod -a -G ssh-users apolo
     
     systemctl restart ssh
     log_message "AUDIT" "SSH hardening avançado aplicado"
@@ -381,7 +381,7 @@ main() {
     echo "📝 Logs de auditoria: /var/log/security-audit/"
     echo ""
     echo "⚠️  IMPORTANTE: Teste a conectividade SSH antes de desconectar!"
-    echo "   Comando: ssh -p 2222 -i ~/.ssh/id_rsa professor@localhost"
+    echo "   Comando: ssh -p 2222 -i ~/.ssh/id_rsa apolo@localhost"
 }
 
 # Executar se chamado diretamente

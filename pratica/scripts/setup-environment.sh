@@ -26,14 +26,14 @@ UsePAM yes
 EOF
 
 # Usuário de teste
-useradd -m -s /bin/bash professor 2>/dev/null || true
-echo "professor:123456" | chpasswd
-usermod -aG sudo professor
+useradd -m -s /bin/bash apolo 2>/dev/null || true
+echo "apolo:123456789" | chpasswd
+usermod -aG sudo apolo
 
 # Desabilitar segurança para demonstração
 ufw --force disable
 systemctl restart ssh
 
 echo "✅ Ambiente vulnerável configurado!"
-echo "   Usuário: professor | Senha: 123456"
+echo "   Usuário: apolo | Senha: 123456789"
 echo "   SSH: porta 22 | Firewall: desabilitado"
