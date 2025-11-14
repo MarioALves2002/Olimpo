@@ -88,8 +88,15 @@ deps: ## Instalar dependências
 	@which ufw >/dev/null 2>&1 || echo "ufw já disponível"
 	@echo "✅ Dependências verificadas"
 
-demo: setup ataques correcao relatorio ## Demo completa para apresentação
-	@echo "$(GREEN)🎉 Demonstração completa concluída!$(NC)"
+demo-ataques: setup ataques ## Demo apenas dos ataques
+	@echo "$(RED)⚔️  Demo de ataques concluída - SSH ainda acessível!$(NC)"
+	@echo "$(YELLOW)🔧 Execute 'make correcao' quando quiser aplicar hardening$(NC)"
 
-all: setup ataques correcao test relatorio ## Pipeline completo
-	@echo "$(GREEN)🎉 Pipeline executado com sucesso!$(NC)"
+demo: setup ataques ## Demo segura - não aplica hardening automaticamente
+	@echo "$(GREEN)🎉 Demonstração de ataques concluída!$(NC)"
+	@echo "$(YELLOW)🔧 Para aplicar correções: make correcao$(NC)"
+	@echo "$(YELLOW)📊 Para gerar relatório: make relatorio$(NC)"
+
+all: setup ataques ## Pipeline sem hardening automático
+	@echo "$(GREEN)🎉 Pipeline de ataques executado!$(NC)"
+	@echo "$(YELLOW)🔧 Execute manualmente: make correcao$(NC)"
