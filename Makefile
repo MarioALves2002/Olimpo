@@ -26,6 +26,22 @@ diagnostico: ## Diagnóstico completo do problema SSH
 	@chmod +x diagnostico.sh
 	@./diagnostico.sh
 
+teste-ssh: ## Teste SSH simples
+	@chmod +x teste-ssh-simples.sh
+	@./teste-ssh-simples.sh
+
+gerar-alvo: ## Gerar novo usuário descartável
+	@chmod +x gerar-alvo.sh
+	@./gerar-alvo.sh
+
+apagar-alvo: ## Apagar usuário atual e limpar sistema
+	@chmod +x apagar-alvo.sh
+	@./apagar-alvo.sh
+
+status-alvo: ## Verificar status do alvo atual
+	@chmod +x status-alvo.sh
+	@./status-alvo.sh
+
 setup: ## Configurar ambiente vulnerável
 	@chmod +x pratica/scripts/setup-environment.sh
 	@sudo ./pratica/scripts/setup-environment.sh

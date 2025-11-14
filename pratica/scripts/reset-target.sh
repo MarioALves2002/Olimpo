@@ -2,8 +2,15 @@
 
 # Reset da Máquina Alvo - Voltar ao Estado Vulnerável
 
-TARGET="192.168.3.216"
-USER="apolo"
+# Ler configuração atual
+if [ -f .current-target ]; then
+    source .current-target
+    TARGET="$TARGET_IP"
+    USER="$CURRENT_USER"
+else
+    TARGET="192.168.3.216"
+    USER="apolo"
+fi
 
 # Verificar conectividade
 if ! ping -c 1 "$TARGET" >/dev/null 2>&1; then

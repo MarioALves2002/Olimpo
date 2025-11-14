@@ -2,8 +2,15 @@
 
 # Demo Vulnerabilidades - Trabalho Final Segurança
 
-TARGET="192.168.3.216"
-USER="apolo"
+# Ler configuração atual
+if [ -f .current-target ]; then
+    source .current-target
+    TARGET="$TARGET_IP"
+    USER="$CURRENT_USER"
+else
+    TARGET="192.168.3.216"
+    USER="apolo"
+fi
 
 # Contadores
 ATAQUES_TOTAL=0
