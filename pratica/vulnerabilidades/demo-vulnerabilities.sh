@@ -3,7 +3,11 @@
 # Demo Vulnerabilidades - Trabalho Final Segurança
 
 # Ler configuração atual
-if [ -f .current-target ]; then
+if [ -f "$(dirname "$0")/../../.current-target" ]; then
+    source "$(dirname "$0")/../../.current-target"
+    TARGET="$TARGET_IP"
+    USER="$CURRENT_USER"
+elif [ -f ".current-target" ]; then
     source .current-target
     TARGET="$TARGET_IP"
     USER="$CURRENT_USER"

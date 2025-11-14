@@ -42,6 +42,10 @@ status-alvo: ## Verificar status do alvo atual
 	@chmod +x status-alvo.sh
 	@./status-alvo.sh
 
+teste-config: ## Testar se configuração está sendo lida
+	@chmod +x teste-config.sh
+	@./teste-config.sh
+
 setup: ## Configurar ambiente vulnerável
 	@chmod +x pratica/scripts/setup-environment.sh
 	@sudo ./pratica/scripts/setup-environment.sh
