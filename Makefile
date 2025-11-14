@@ -18,6 +18,10 @@ check: ## Verificar ambiente antes da demonstração
 	@chmod +x check-environment.sh
 	@./check-environment.sh
 
+fix-ssh: ## Corrigir SSH de emergência (porta 2222 -> 22)
+	@chmod +x fix-ssh-emergency.sh
+	@./fix-ssh-emergency.sh
+
 setup: ## Configurar ambiente vulnerável
 	@chmod +x pratica/scripts/setup-environment.sh
 	@sudo ./pratica/scripts/setup-environment.sh
