@@ -1,6 +1,6 @@
 # Makefile - Trabalho Final Segurança da Informação
 
-.PHONY: help setup attack harden test report clean all gerar-alvo apagar-alvo status-alvo teste-config ataques correcao relatorio
+.PHONY: help setup attack harden test report clean all gerar-alvo apagar-alvo status-alvo teste-config atualizar-alvo ataques correcao relatorio
 
 # Cores
 RED := \033[0;31m
@@ -45,6 +45,10 @@ status-alvo: ## Verificar status do alvo atual
 teste-config: ## Testar se configuração está sendo lida
 	@chmod +x teste-config.sh
 	@./teste-config.sh
+
+atualizar-alvo: ## Atualizar alvo manualmente
+	@chmod +x atualizar-alvo.sh
+	@./atualizar-alvo.sh
 
 setup: ## Configurar ambiente vulnerável
 	@chmod +x pratica/scripts/setup-environment.sh
