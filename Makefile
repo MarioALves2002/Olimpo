@@ -22,6 +22,10 @@ fix-ssh: ## Corrigir SSH de emergência (porta 2222 -> 22)
 	@chmod +x fix-ssh-emergency.sh
 	@./fix-ssh-emergency.sh
 
+diagnostico: ## Diagnóstico completo do problema SSH
+	@chmod +x diagnostico.sh
+	@./diagnostico.sh
+
 setup: ## Configurar ambiente vulnerável
 	@chmod +x pratica/scripts/setup-environment.sh
 	@sudo ./pratica/scripts/setup-environment.sh
