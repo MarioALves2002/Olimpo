@@ -1,6 +1,6 @@
 # Makefile - Trabalho Final Segurança da Informação
 
-.PHONY: help setup attack harden test report clean all gerar-alvo apagar-alvo status-alvo
+.PHONY: help setup attack harden test report clean all gerar-alvo apagar-alvo status-alvo teste-config ataques correcao relatorio
 
 # Cores
 RED := \033[0;31m
