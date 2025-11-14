@@ -5,6 +5,13 @@
 TARGET="192.168.3.216"
 USER="apolo"
 
+# Verificar conectividade
+if ! ping -c 1 "$TARGET" >/dev/null 2>&1; then
+    echo "❌ ERRO: Não foi possível conectar com $TARGET"
+    echo "Verifique se a máquina alvo está ativa na rede"
+    exit 1
+fi
+
 echo "="*60
 echo "🔴 DEMONSTRAÇÃO DE VULNERABILIDADES CRÍTICAS"
 echo "Alvo: $TARGET | Usuário: $USER"

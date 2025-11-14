@@ -1,0 +1,69 @@
+# Makefile para executar DENTRO do servidor alvo (192.168.3.216)
+
+.PHONY: help resetar configurar
+
+# Cores
+RED := \033[0;31m
+GREEN := \033[0;32m
+YELLOW := \033[1;33m
+NC := \033[0m
+
+help: ## Exibir comandos disponíveis
+	@echo "$(YELLOW)🎯 Makefile do Servidor Alvo$(NC)"
+	@echo "================================"
+	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  $(GREEN)%-12s$(NC) %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+
+resetar: ## Resetar servidor para estado vulnerável
+	@echo "$(RED)🔄 RESETANDO SERVIDOR PARA ESTADO VULNERÁVEL$(NC)"
+	@echo "================================================"
+	@echo "[1] Configurando SSH vulnerável..."
+	@sudo bash -c 'cat > /etc/ssh/sshd_config << EOF\nPort 22\nPermitRootLogin yes\nPasswordAuthentication yes\nPermitEmptyPasswords no\nX11Forwarding yes\nUsePAM yes\nEOF'
+	@sudo systemctl restart ssh
+	@echo "[2] Desabilitando firewall..."
+	@sudo ufw --force disable
+	@echo "[3] Parando serviços de segurança..."
+	@sudo systemctl stop fail2ban 2>/dev/null || true
+	@sudo systemctl disable fail2ban 2>/dev/null || true
+	@echo "[4] Removendo auditoria..."
+	@sudo rm -f /etc/audit/rules.d/security-hardening.rules 2>/dev/null || true
+	@echo "[5] Restaurando kernel..."
+	@if [ -f /etc/sysctl.conf.backup ]; then sudo cp /etc/sysctl.conf.backup /etc/sysctl.conf; sudo sysctl -p; fi
+	@echo "[6] Configurando usuário apolo..."
+	@sudo useradd -m -s /bin/bash apolo 2>/dev/null || true
+	@echo "apolo:123456789" | sudo chpasswd
+	@sudo usermod -aG sudo apolo
+	@echo "$(GREEN)✅ SERVIDOR RESETADO - VULNERÁVEL NOVAMENTE!$(NC)"
+
+configurar: ## Configurar servidor inicial vulnerável
+	@echo "$(YELLOW)🔧 CONFIGURANDO SERVIDOR VULNERÁVEL$(NC)"
+	@echo "======================================="
+	@echo "[1] Instalando dependências..."
+	@sudo apt update -qq 2>/dev/null || true
+	@sudo apt install -y openssh-server ufw rsyslog 2>/dev/null || true
+	@echo "[2] Habilitando SSH..."
+	@sudo systemctl start ssh
+	@sudo systemctl enable ssh
+	@echo "[3] Configurando SSH vulnerável..."
+	@sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.backup 2>/dev/null || true
+	@sudo bash -c 'cat > /etc/ssh/sshd_config << EOF\nPort 22\nPermitRootLogin yes\nPasswordAuthentication yes\nPermitEmptyPasswords no\nX11Forwarding yes\nUsePAM yes\nEOF'
+	@sudo systemctl restart ssh
+	@echo "[4] Desabilitando firewall..."
+	@sudo ufw --force disable
+	@echo "[5] Criando usuário apolo..."
+	@sudo useradd -m -s /bin/bash apolo 2>/dev/null || true
+	@echo "apolo:123456789" | sudo chpasswd
+	@sudo usermod -aG sudo apolo
+	@echo "$(GREEN)✅ SERVIDOR CONFIGURADO E VULNERÁVEL!$(NC)"
+	@echo "$(YELLOW)🎯 Pronto para receber ataques$(NC)"
+
+status: ## Verificar status do servidor
+	@echo "$(YELLOW)📊 STATUS DO SERVIDOR$(NC)"
+	@echo "========================"
+	@echo "SSH Status:"
+	@sudo systemctl status ssh --no-pager -l | head -3
+	@echo ""
+	@echo "Firewall Status:"
+	@sudo ufw status
+	@echo ""
+	@echo "Usuário apolo:"
+	@id apolo 2>/dev/null || echo "Usuário apolo não existe"

@@ -14,9 +14,17 @@ help: ## Exibir comandos disponíveis
 	@echo "================================================"
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  $(GREEN)%-12s$(NC) %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
+check: ## Verificar ambiente antes da demonstração
+	@chmod +x check-environment.sh
+	@./check-environment.sh
+
 setup: ## Configurar ambiente vulnerável
 	@chmod +x pratica/scripts/setup-environment.sh
 	@sudo ./pratica/scripts/setup-environment.sh
+
+reset: ## Resetar máquina alvo para estado vulnerável
+	@chmod +x pratica/scripts/reset-target.sh
+	@./pratica/scripts/reset-target.sh
 
 test: ## Executar testes automatizados
 	@chmod +x pratica/scripts/test-framework.sh
@@ -43,14 +51,20 @@ report: ## Gerar relatórios
 	@cp -r /var/log/security-audit /tmp/security-reports/ 2>/dev/null || true
 	@echo "$(GREEN)📊 Relatórios em /tmp/security-reports$(NC)"
 
-ataques: attack ## Executar ataques na vítima
+ataques: ## Executar ataques na vítima
+	@chmod +x pratica/vulnerabilidades/demo-vulnerabilities.sh
+	@./pratica/vulnerabilidades/demo-vulnerabilities.sh
 	@echo "$(RED)⚔️  Ataques executados na vítima 192.168.3.216$(NC)"
 
-correcao: harden ## Aplicar correções de segurança
+correcao: ## Aplicar correções de segurança
+	@chmod +x pratica/hardening/advanced-hardening.sh
+	@sudo ./pratica/hardening/advanced-hardening.sh
 	@echo "$(GREEN)🛡️  Correções aplicadas$(NC)"
 
-relatorio: report ## Gerar relatório final
-	@echo "$(BLUE)📊 Relatório final gerado$(NC)"
+relatorio: ## Gerar relatório final
+	@mkdir -p /tmp/security-reports
+	@cp -r /var/log/security-audit /tmp/security-reports/ 2>/dev/null || true
+	@echo "$(BLUE)📊 Relatório final gerado em /tmp/security-reports$(NC)"
 
 validate: ## Validar configurações
 	@ssh apolo@192.168.3.216 "grep -E '(Port|PermitRootLogin)' /etc/ssh/sshd_config" 2>/dev/null || true
