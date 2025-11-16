@@ -28,44 +28,64 @@ fi
 
 echo "[2] Resetando configurações..."
 sshpass -p "123456789" ssh -p "$PORTA_SSH" -o StrictHostKeyChecking=no "$USER@$TARGET" "
-# Parar serviços de segurança
+# Parar todos os serviços de segurança
 sudo systemctl stop fail2ban 2>/dev/null || true
+sudo systemctl disable fail2ban 2>/dev/null || true
 sudo systemctl stop auditd 2>/dev/null || true
 
 # Desabilitar firewall completamente
 sudo ufw --force reset 2>/dev/null || true
 sudo ufw --force disable 2>/dev/null || true
 sudo iptables -F 2>/dev/null || true
+sudo iptables -X 2>/dev/null || true
+sudo iptables -t nat -F 2>/dev/null || true
+sudo iptables -t nat -X 2>/dev/null || true
 
-# Restaurar SSH para porta 22
+# Restaurar SSH para configuração vulnerável
 sudo bash -c 'cat > /etc/ssh/sshd_config << EOF
 Port 22
+Protocol 2
 PermitRootLogin yes
 PasswordAuthentication yes
 PermitEmptyPasswords no
 X11Forwarding yes
 UsePAM yes
+PubkeyAuthentication yes
+ChallengeResponseAuthentication no
+UseDNS no
 EOF'
 
-# Reiniciar SSH
-sudo systemctl restart ssh
-
-# Limpar configurações de hardening
+# Remover todas as configurações de hardening
 sudo rm -rf /etc/audit/rules.d/security-hardening.rules 2>/dev/null || true
 sudo rm -rf /etc/fail2ban/jail.local 2>/dev/null || true
+sudo rm -rf /etc/security-hardening 2>/dev/null || true
+sudo rm -rf /usr/local/bin/security-monitor.sh 2>/dev/null || true
+sudo rm -rf /var/log/security-alerts.log 2>/dev/null || true
+sudo rm -rf /var/log/compliance-report-*.json 2>/dev/null || true
 
-# Restaurar kernel se backup existir
+# Remover grupo ssh-users e cron jobs de segurança
+sudo groupdel ssh-users 2>/dev/null || true
+sudo sed -i '/security-monitor.sh/d' /etc/crontab 2>/dev/null || true
+
+# Restaurar kernel para configuração padrão
 if [ -f /etc/sysctl.conf.backup ]; then
     sudo cp /etc/sysctl.conf.backup /etc/sysctl.conf
-    sudo sysctl -p 2>/dev/null || true
+else
+    # Remover configurações de hardening do kernel
+    sudo sed -i '/# Security Hardening - Kernel Parameters/,/^$/d' /etc/sysctl.conf 2>/dev/null || true
 fi
+sudo sysctl -p 2>/dev/null || true
 
-# Garantir usuário apolo
+# Garantir usuário apolo com configuração vulnerável
 sudo useradd -m -s /bin/bash apolo 2>/dev/null || true
 echo 'apolo:123456789' | sudo chpasswd
 sudo usermod -aG sudo apolo
 
-echo 'Reset completo executado'
+# Reiniciar serviços
+sudo systemctl restart ssh
+sudo systemctl restart rsyslog 2>/dev/null || true
+
+echo 'Reset completo executado - servidor vulnerável novamente'
 "
 
 # Aguardar SSH reiniciar
@@ -81,9 +101,13 @@ else
 fi
 
 echo ""
-echo "✅ RESET COMPLETO CONCLUÍDO!"
-echo "🔄 Servidor voltou ao estado original"
-echo "🎯 SSH na porta 22, firewall desabilitado"
-echo "🎯 Usuário apolo com senha 123456789"
+✅ RESET COMPLETO CONCLUÍDO!"
+echo "🔄 Todas as configurações de hardening removidas"
+echo "🎯 SSH: porta 22 | Autenticação por senha habilitada"
+echo "🎯 Firewall: completamente desabilitado"
+echo "🎯 Fail2Ban: parado e desabilitado"
+echo "🎯 Auditoria: regras de hardening removidas"
+echo "🎯 Usuário: apolo com senha 123456789"
 echo ""
+echo "⚠️  Servidor agora está VULNERÁVEL novamente"
 echo "Execute: make ataques"
