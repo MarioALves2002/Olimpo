@@ -1,6 +1,6 @@
 # Makefile - Trabalho Final Segurança da Informação
 
-.PHONY: help setup attack harden test report clean all
+.PHONY: help setup ataques harden test report clean all
 
 # Cores
 RED := \033[0;31m
@@ -22,9 +22,10 @@ test: ## Executar testes automatizados
 	@chmod +x pratica/scripts/test-framework.sh
 	@./pratica/scripts/test-framework.sh all
 
-attack: ## Demonstrar vulnerabilidades
+ataques: ## Executar ataques reais contra apolo@192.168.3.216
 	@chmod +x pratica/vulnerabilidades/demo-vulnerabilities.sh
 	@./pratica/vulnerabilidades/demo-vulnerabilities.sh
+	@echo "$(RED)⚔️  Ataques reais executados!$(NC)"
 
 harden: ## Aplicar hardening de segurança
 	@chmod +x pratica/hardening/advanced-hardening.sh
@@ -54,8 +55,8 @@ deps: ## Instalar dependências
 	@sudo apt update -qq
 	@sudo apt install -y nmap hydra sshpass fail2ban ufw rsyslog auditd jq
 
-demo: setup attack harden validate ## Demo completa
+demo: setup ataques harden validate ## Demo completa
 	@echo "$(GREEN)🎉 Demonstração concluída!$(NC)"
 
-all: deps setup attack harden test report ## Pipeline completo
+all: deps setup ataques harden test report ## Pipeline completo
 	@echo "$(GREEN)🎉 Pipeline executado com sucesso!$(NC)"
