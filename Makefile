@@ -1,6 +1,6 @@
 # Makefile - Trabalho Final Segurança da Informação
 
-.PHONY: help setup ataques harden test report clean all
+.PHONY: help setup ataques harden test report clean all reset
 
 # Cores
 RED := \033[0;31m
@@ -43,6 +43,10 @@ report: ## Gerar relatórios
 	@mkdir -p /tmp/security-reports
 	@cp -r /var/log/security-audit /tmp/security-reports/ 2>/dev/null || true
 	@echo "$(GREEN)📊 Relatórios em /tmp/security-reports$(NC)"
+
+reset: ## Reset completo do servidor remoto
+	@chmod +x reset-servidor.sh
+	@./reset-servidor.sh
 
 validate: ## Validar configurações
 	@ssh apolo@192.168.3.216 "grep -E '(Port|PermitRootLogin)' /etc/ssh/sshd_config" 2>/dev/null || true
