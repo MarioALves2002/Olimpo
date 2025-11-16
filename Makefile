@@ -1,6 +1,6 @@
 # Makefile - Trabalho Final Segurança da Informação
 
-.PHONY: help setup ataques harden test report clean all reset
+.PHONY: help setup ataques harden test report clean all reset reset-local
 
 # Cores
 RED := \033[0;31m
@@ -47,6 +47,10 @@ report: ## Gerar relatórios
 reset: ## Reset completo do servidor remoto
 	@chmod +x reset-servidor.sh
 	@./reset-servidor.sh
+
+reset-local: ## Reset local (executar DENTRO do servidor)
+	@chmod +x reset-local.sh
+	@sudo ./reset-local.sh
 
 validate: ## Validar configurações
 	@ssh apolo@192.168.3.216 "grep -E '(Port|PermitRootLogin)' /etc/ssh/sshd_config" 2>/dev/null || true
